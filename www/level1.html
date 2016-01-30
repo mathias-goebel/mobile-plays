@@ -1,0 +1,33 @@
+<div class="pages">
+  <div data-page="level1" class="page">
+
+	<div class="navbar">
+	  <div class="navbar-inner">
+	    <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a></div>
+	    <div class="center sliding" id="lvl1head">Level 1</div>
+		<div class="right">
+			<a href="#" id="sortbtn" class="link" onclick="lvl1sort()"><i class="fa fa-sort-alpha-asc"></i></a>
+			<a href="#" class="link open-panel"><i class="fa fa-bars"></i></a>
+		</div>
+	  </div>
+	</div>    
+
+	<div class="toolbar toolbar-bottom">
+	    <div class="toolbar-inner iconline" id="lvl1toolbar">
+		<a href="#" class="link disabled" id="lvl1save" onclick="lvl1save()"><i class="fa fa-floppy-o"></i> SAVE</a>
+		<a href="#" class="link disabled" id="lvl1done" onclick="lvl1done()"><i class="fa fa-check-square-o"></i> DONE</a>
+		<a href="#" class="link disabled" id="lvl1next" onclick="lvl1next()"><i class="fa fa-step-forward"></i> NEXT</a>
+		<a href="#" class="link" onclick="lvl1reload()"><i class="fa fa-refresh"></i> RELOAD</a>
+	    </div>
+	</div>
+
+	<div class="page-content">
+	 <div class="content-block-title"><!-- helper for toolbaar height --></div>
+	 <div class="content-block-title">Finde exakte <em>ist</em>-Relationen.</div>
+	    <div class="list-block-label"><span id="author"></span>: <span id="title"></span></div>
+	    	<div class="list-block no-ripple" id="speakerlist">
+	    </div>
+	<p id="centerprogress"><span class="progressbar-infinite"></span></p>
+	</div>
+  </div>
+</div>

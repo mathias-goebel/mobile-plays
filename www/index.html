@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://personae.gcdh.de; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://personae.gcdh.de; img-src 'self' data:; style-src 'self' 'unsafe-inline';">
+    <title>Play(s)</title>
+	<link rel="shortcut icon" type="image/png" href="icon.png">
+
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/plays.css">
+
+  </head>
+  <body>
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-reveal">
+      <div class="content-block">
+<h1 id="score"><i class="fa fa-trophy"></i> <span id="uscore">0</span></h1>
+        <p>Device Properties:</p>
+<p id="deviceProp"></p>
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+    <!-- Views, and they are tabs-->
+    <!-- We need to set "toolbar-through" class on it to keep space for our tab bar-->
+    <div class="views tabs toolbar-through">
+      <!-- Your first view, it is also a .tab and should have "active" class to make it visible by default-->
+      <div id="view-1" class="view view-main tab active">
+        <!-- Pages-->
+        <div class="pages">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index-1" class="page">
+
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link"><i class="fa fa-play"></i>&nbsp;Play(s)</a>
+        </div>
+        <div class="center">
+            <p id="headertext"></p>
+	</div>
+        <div class="right">
+            <a href="#" class="link open-panel"><i class="fa fa-bars"></i></a>
+        </div>
+    </div>
+</div>   
+
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block-title">Welcome</div>
+              <div class="content-block">
+              
+              </div>
+              <div class="content-block"><p id="deviceProp"></p>
+<ul id="teaser">
+<li>crowd sourcing</li> <li>gamification</li> <li>social editing</li>
+</ul>
+<h3 id="welcome">Welcome</h3>
+
+                <p>Based on 690 dramatic texts from the TextGrid Repository, we will enrich the encoding by provide tei:who attributes to the tei:speaker element and further more. So come on and start to find simple is relations in level one. You can collect a single point per relation and this score doubles if another player verifies your submission. Your task is getting more difficult in the higher levels...</p>
+
+  <div id="levellist"></div>
+<!--
+now UUID used for identification, so no sign in or registation needed
+<a href="#" class="button button-fill open-login-screen"><i class="fa fa-sign-in"></i> Sign In</a>
+<p style="color:grey; text-align:center">or</p>
+<a href="#" class="button button-fill"><i class="fa fa-user-plus"></i> Register</a>
+-->
+
+              <p><span class="progressbar-infinite"></span></p>
+ 
+
+    </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	<script src="cordova.js"></script>
+	<script type="text/javascript" src="js/framework7.min.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/plays.js"></script>
+  </body>
+</html>
