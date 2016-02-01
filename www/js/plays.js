@@ -45,7 +45,7 @@ function onDeviceReady() {
 		});
 };
 
-function onBackKeyDown() { $$(".back").click(); } 
+function onBackKeyDown() { $$(".back").click(); }
 
 var device;
 
@@ -105,6 +105,7 @@ function lvl1reload(){
 	$('#centerprogress').show();
 	$('#lvl1save, #lvl1next, #lvl1done').addClass('disabled');
 	$('#author, #title, #speakerlist').empty();
+	$('#sortbtn > i').attr('class', 'fa fa-sort-alpha-asc');
 	lvl1get('true');
 };
 
@@ -120,7 +121,7 @@ function lvl1go(){
 + "<div class='item-inner'><div class='item-title'>" + val + "</div><div class='item-after accordion-item-toggle'><span class='badge'>txt</span></div></div>"
 + "</label></div>"
 + "<div class='accordion-item-content'><div class='content-block' id='lvl1texts"+ key +"'><p>loading data...</p></div></div>"
-+ " <div class='swipeout-actions-right'><a href='#' class='lvl1remove bg-red' data-confirm='You are going to remove this speaker from the group.' data-confirm-title='Are you sure?' data-close-on-cancel='true'>Remove</a></div></li>" );
++ " <div class='swipeout-actions-right' style='display:none;'><a href='#' class='lvl1remove bg-red ripple'>Remove</a></div></li>" );
 	});
 	$( "<ul/>", {
 		"class": "speaker-list",
@@ -138,8 +139,17 @@ function lvl1go(){
 		});
 	$$('.lvl1remove').on('click', function () {
 		var removeId = $$(this).parent().parent().attr('id');
-		console.log(removeId);
 		$.getJSON("https://personae.gcdh.de/ajax/lvl1remove.xql", {num:id, key:removeId, uuid:uuid})
+			.done( function( data ){
+				myApp.swipeoutClose('#'+removeId);
+				var group = $('#'+removeId).attr('class').split(' ')[2];
+				if($('.'+group).length > 2){ 
+					$('#'+removeId+'> .swipeout-actions-right').css('display', 'none');
+					$('#'+removeId).removeClass( group ); } 
+				else { 
+					$('.'+group+'> .swipeout-actions-right').css('display', 'none');
+					$('.'+group).removeClass( group ); }				
+			});
 	});
 	// works in browser
 	$( "input[type=checkbox]" ).on( "click", function(){ lvl1checksave(); });

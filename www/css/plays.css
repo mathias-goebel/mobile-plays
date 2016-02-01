@@ -11,15 +11,19 @@
 .group10{background-color:#ffe0b2;}
 .group11{background-color:#ffccbc;}
 
+
+li.swipeout > div.swipeout-actions-right {display:flex !important;}
+
 .list-block .swipeout-actions-left a.bg-red, .list-block .swipeout-actions-right a.bg-red {
     background: #f44336;
 }
 
-.item-after {
+div.swipeout-content label.label-checkbox.item-content.no-ripple div.item-inner div.item-after.accordion-item-toggle {
     position: absolute;
     right: 20px;
     top: 10px;
 }
+
 p#centerprogress {
     margin-top: 50%;
     margin-left: 5%;
