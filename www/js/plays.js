@@ -1,13 +1,35 @@
-// detect between app and browser
+// Play(s) main javascript file
+//
+// app or browser
 var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 if ( app ) {
     document.addEventListener("deviceready", onDeviceReady, false);
 } else {
     onDeviceReady();
 }
-
 // back button
-document.addEventListener("backbutton", onBackKeyDown, false);
+	document.addEventListener("backbutton", onBackKeyDown, false);
+
+// Framework7
+	var myApp = new Framework7({
+		material: true,
+		swipePanel: 'left'
+	});
+	var $$ = Dom7;
+	var view1 = myApp.addView('#view-1');
+
+// global var
+	var device;
+	var backi = 0;
+	var id;
+	var title;
+	var author;
+	var speaker;
+	var marked;
+	var timeout;
+	var uuid;
+	var hslist;
+	var uname;
 
 function onDeviceReady() {
 	var element = document.getElementById('deviceProp');
@@ -33,11 +55,12 @@ function onDeviceReady() {
 				    myApp.addNotification({
 					message: 'We fondly hope you like the randomly choosen nickname: '+uname,
 					onClose: function () {
-						    myApp.alert('Since this is the first time you visit Play(s) we like to recommend our tutorial. Unfortunatly it is not implemented yet - so you have to imagine it. And it is great!', 'Welcome to Play(s)!');
+						    myApp.alert('Since this is the first time you visit Play(s) we like to recommend our tutorial. Unfortunatly it is not implemented yet...', 'Welcome to Play(s)!');
 						}
 				    });
 			} else { $( "#welcome" ).append( " back, "+uname+"!" ); }
 			$( '#uscore' ).html( data.score );
+			$( '#rank' ).html( data.rank );
 			for (var i=1; i <= data.level; i++){
 			    $('<p class="buttons-row"><a class="button button-fill button-raised" href="level'+i+'.html"><span id="buttonLevel'+i+'"</span></a></p>').appendTo( "#levellist" ).hide().fadeIn(1000);
 			  };
@@ -45,22 +68,82 @@ function onDeviceReady() {
 		});
 };
 
-function onBackKeyDown() { $$(".back").click(); }
+function getBoni(n){
+	$.getJSON("https://personae.gcdh.de/ajax/bonus.xql", {bonus:n, uuid:uuid})
+		.done(function( data ){ 
+			if(data.news === 1){myApp.alert('+'+ data.thisscore +'points!!!1!', 'You have found a secret!');};
+			$( '#uscore' ).html( data.score );
+		});
+};
 
-var device;
+function onBackKeyDown() {
 
-var myApp = new Framework7({
-	material: true
+if( $$('.popup').hasClass('modal-in') ) { myApp.closeModal();  }
+else if($$('body').hasClass('with-panel-left-reveal')) { myApp.closePanel(); }
+
+else if($$('.page-on-center').length === 0 || $$('.page-on-center').attr('data-page') === 'index-1' ){
+	if(backi === 1){ backi = 0; navigator.app.exitApp(); }
+	else { 	backi++;
+
+		myApp.addNotification({
+			message: 'Tap twice to leave Play(s).', 
+			button: { text: 'No, thanks.'},
+			onClose: function () {
+
+            				getBoni('quit');
+					backi--;
+        				}
+			}); //notification
+	} // end else
+} //end else if
+else { $$(".back").click(); }
+return backi;
+};
+
+// highscore list
+$$('.popup-highscore').on('open', function () {
+	var items = [];
+	var i = 1;
+	$.getJSON("https://personae.gcdh.de/ajax/highscore.xql")
+	.done(function( data ) {
+		hslist = data;
+		$.each(data, function(key, val){
+			items.push(
+			"<li class='item-content'>"
++			  "<div class='item-media'><span class='badge'>"+i+"</span></div>"
++			  "<div class='item-inner'>"
++			    "<div class='item-title'>"+key+"</div>"
++			    "<div class='item-after'><span class='badge'>"+val+"</span></div>"
++			  "</div>"
++			"</li>"
+			);
+		i++;
+		});
+				$( "<ul/>", {"class": "hslisting",html: items.join( "" )}).appendTo( "#highscore" );
+	});
+
 });
-var $$ = Dom7;
-var view1 = myApp.addView('#view-1');
+$$('.popup-highscore').on('closed', function () {
+	$( "#highscore" ).empty();
+});
 
+// contributions list
+$$('.popup-contributions').on('open', function () {
+	var i = 1;
+	$.getJSON("https://personae.gcdh.de/ajax/userLastContrib.xql", {uuid:uuid})
+	.done(function( data ) {
+		$.each(data.ids, function(key, val){
+			key = key + 1;
+			var r = Math.ceil( key / 4 ).toString();
+			$( '#r'+r ).append("<div class='col-25 bglvl"+data.levels[key - 1].toString()+"'><div class='contribid'>"+val+"</div><div class='contribtitle'>"+data.titles[key - 1]+"</div></div>" );
+			i++;
+		});
+	});
 
-var id;
-var title;
-var author;
-var speaker;
-var marked;
+});
+$$('.popup-contributions').on('closed', function () {
+	$( "#contributions > .row" ).empty();
+});
 
 // progress bar on loading
 var container = $$('body');
@@ -81,6 +164,10 @@ if (container.children('.progressbar-infinite').length){
 	simulateLoading();
 };
 
+///////////////
+//  LEVEL 1  //
+///////////////
+
 $$(document).on('pageInit', '.page[data-page="level1"]', function (e) {
 	lvl1get();
 	$$('#speakerlist').change(function(){ lvl1checksave(); });
@@ -95,7 +182,6 @@ function lvl1get(reload){
 		title = data.title;
 		speaker = data.speaker;
 		marked = data.marked;
-		console.log(parameter);
 		lvl1go();
 	});
 };
@@ -145,10 +231,14 @@ function lvl1go(){
 				var group = $('#'+removeId).attr('class').split(' ')[2];
 				if($('.'+group).length > 2){ 
 					$('#'+removeId+'> .swipeout-actions-right').css('display', 'none');
-					$('#'+removeId).removeClass( group ); } 
+					$('#'+removeId).removeClass( group );
+					$('#'+removeId).removeClass('swipeout'); } 
 				else { 
 					$('.'+group+'> .swipeout-actions-right').css('display', 'none');
-					$('.'+group).removeClass( group ); }				
+					$('.'+group).removeClass( 'swipeout' );
+					$('.'+group).removeClass( group );
+					};
+				
 			});
 	});
 	// works in browser
@@ -187,7 +277,7 @@ function lvl1done(){
 		});
 };
 
-var timeout;
+
 
 function lvl1next(){
 	$('#lvl1head').empty();
@@ -223,6 +313,15 @@ function lvl1save(){
 	var agents = $( 'input:checked' ).map(function(){ return this.value; }).get().join(';');
 	$.getJSON("https://personae.gcdh.de/ajax/lvl1link.xql", {link:agents, num:id, uuid:uuid})
 		.done(function( data ){
+
+			var lis = document.getElementsByClassName('swipeout');
+			for (var num=-1, i=0, max=lis.length; i < max; i++){
+			  var j = lis[i].classList[2].substr(5, 2);
+			  if(j > num){ num=j; console.log(j);}
+			}
+			var newnum = parseInt(num)+1;
+			$( 'input:checked' ).parents('li').addClass('swipeout group'+newnum);
+
 			$( '#uscore' ).html( data.score );
 			switch(data.thisscore) {
 				    case 0:
@@ -232,7 +331,7 @@ function lvl1save(){
 					var msg = '+1 point! If an other player validates your input, the score doubles.';
 					break;
 				    default:
-					var msg = '+'+data.thisscore+'point! If an other player validates your input, the score doubles.';
+					var msg = '+'+data.thisscore+'points! If an other player validates your input, the score doubles.';
 				}
 			    myApp.addNotification({
 				message: msg, 
@@ -247,7 +346,7 @@ function lvl1save(){
 };
 
 function lvl1sort(){
-// according to the current placed icon, 
+// according to the current icon, 
 // a sort function will be choosed
 
 if($('#sortbtn > i').attr('class') === 'fa fa-sort-alpha-asc'){
@@ -282,5 +381,96 @@ else if($('#sortbtn > i').attr('class') === 'fa fa-sort-numeric-asc'){
 	});
 	$('#sortbtn > i').attr('class', 'fa fa-sort-alpha-asc');
 }
+};
 
+///////////////
+//  LEVEL 2  //
+///////////////
+
+$$(document).on('pageInit', '.page[data-page="level2"]', function (e) {
+	lvl2get();
+	$$('#speakerlist').change(function(){ lvl1checksave(); });
+});
+
+function lvl2get(reload){
+	if(reload === 'true'){ var parameter = {uuid:uuid, id:id} } else {  var parameter =  {uuid:uuid} };
+	$.getJSON("https://personae.gcdh.de/ajax/level2.xql", parameter)
+	.done(function( data ) {
+		id = data.id;
+		author = data.author;
+		title = data.title;
+		speaker = data.speaker;
+		marked = data.marked;
+		lvl2go();
+	});
+};
+function lvl2go(){
+	var items = [];
+	$.each( speaker, function( key, val ) {
+		key = key+1;
+		items.push(
+"<li class='accordion-item swipeout' id='" + key + "'><div class='swipeout-content'>"
++ "<div class='item-inner'><div class='item-title'>" + val + "</div><div class='item-after accordion-item-toggle'><span class='badge'>txt</span></div></div>"
++ "</div>"
++ "<div class='accordion-item-content'><div class='content-block' id='lvl2texts"+ key +"'><p>loading data...</p></div></div>"
++ " <div class='swipeout-actions-right' style='display:none;'><a href='#' class='swipeout-delete bg-red ripple'>Remove</a></div></li>" );
+	});
+	$( "<ul/>", {
+		"class": "speaker-list",
+		html: items.join( "" )
+	}).appendTo( "#speakerlist" );
+	$('#title').append( title );
+	$('#author').append( author );
+	$.each(marked, function(k, v){
+	    $('#'+v).addClass('group'+k);
+	    $('#'+v).removeClass('swipeout');
+	});
+	$('#centerprogress').hide(function(){
+				setTimeout(function(){ $('#lvl2reset, #lvl2done').removeClass( 'disabled' ); }, 3000);	
+		});
+	$$('.swipeout').on('deleted', function () {
+		var aggkey = $$(this).attr('id');
+		$.getJSON("https://personae.gcdh.de/ajax/lvl2agg.xql", {num:id, key:aggkey, uuid:uuid})
+	});
+	$$('.accordion-item').on('open', function () {
+		var kkey = $$(this).attr('id');
+		$.getJSON("https://personae.gcdh.de/ajax/level1texts.xql", {num:id, key:kkey})
+			.done(function( data ){
+				$( "#lvl2texts"+kkey ).empty();
+				$( "#lvl2texts"+kkey ).append( "<p>"+data.textbefore2+"</p>" );
+				$( "#lvl2texts"+kkey ).append( "<p>"+data.textbefore1+"</p>" );
+				$( "#lvl2texts"+kkey ).append( "<p>"+data.textbefore+"</p>" );
+				$( "#lvl2texts"+kkey ).append( "<p class='thisoccurence'>"+data.text+"</p>" );
+				$( "#lvl2texts"+kkey ).append( "<p>"+data.textafter+"</p>" );
+				$( "#lvl2texts"+kkey ).append( "<p>"+data.textafter1+"</p>" );
+				$( "#lvl2texts"+kkey ).append( "<p>"+data.textafter2+"</p>" );
+			});
+	});
+};
+
+function lvl2done(){
+	$('#lvl2done').addClass('disabled');
+	$.getJSON("https://personae.gcdh.de/ajax/lvl2done.xql", {done:1, num:id, uuid:uuid})
+		.done(function( data ){
+			$( '#uscore' ).html( data.score );
+		   	myApp.addNotification({
+				message: 'Current Score: '+ data.score +'points', 
+				button: { text: 'Next'},
+				onClose: function () {
+					$('#lvl2done').addClass('disabled');
+					lvl2next();}
+			});
+
+		});
+};
+
+function lvl2next(){
+	$('#centerprogress').show();
+	$('#lvl2done').addClass('disabled');
+	$('#author, #title, #speakerlist').empty();
+	$('#sortbtn > i').attr('class', 'fa fa-sort-alpha-asc');
+	lvl2get();
+};
+function lvl2sort(){
+	lvl1sort();
 };

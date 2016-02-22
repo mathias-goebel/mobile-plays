@@ -22,15 +22,59 @@
     <!-- Left panel with reveal effect-->
     <div class="panel panel-left panel-reveal">
       <div class="content-block">
-<h1 id="score"><i class="fa fa-trophy"></i> <span id="uscore">0</span></h1>
-        <p>Device Properties:</p>
-<p id="deviceProp"></p>
-      </div>
+
+
+ 
+<div class="card">
+  <div class="card-content">
+    <div class="list-block">
+      <ul>
+        <li>
+<a href="#view-2" id="hslistbtn" data-popup=".popup-highscore" class="item-content open-popup">
+            <div class="item-media"><h1><i class="fa fa-star"></i></h1></div>
+            <div class="item-inner">
+              <div class="item-title">
+		<h1 id="score"> <span id="uscore">0</span></h1>
+	      </div>
+            </div>
+</a>        </li>
+
+        <li><a href="#view-2" id="hslistbtn" data-popup=".popup-highscore" class="item-content open-popup">
+            <div class="item-media"><h1><i class="fa fa-trophy"></i></h1></div>
+            <div class="item-inner">
+              <div class="item-title">
+		<h1 id="rank"></h1>
+	      </div>
+            </div>
+       </a> </li>
+	<!--li class="item-content">
+        <a href="#view-2" id="hslistbtn" data-popup=".popup-highscore" class="item-link item-content open-popup">
+	    <div class="item-inner">
+              <div class="item-title">
+		<h4>Highscore list</h4>
+	      </div>
+            </div>
+	</a>
+	</li-->
+      </ul>
     </div>
-    <!-- Right panel with cover effect-->
-    <div class="panel panel-right panel-cover">
-      <div class="content-block">
-        <p>Right panel content goes here</p>
+  </div>
+</div> <!-- Score -->
+
+<div class="card"><a href="#view-2" id="hslistbtn" data-popup=".popup-contributions" class="item-content open-popup">
+<div class="card-header">Your Contributions</div>
+<div class="card-content">
+</div></a>
+</div> <!-- Contributions -->
+
+<div class="card">
+<div class="card-header">Your Account</div>
+<div class="card-content">
+        <p>Device Properties:</p>
+	<p id="deviceProp"></p>
+</div>
+</div> <!-- Account -->
+
       </div>
     </div>
     <!-- Views, and they are tabs-->
@@ -43,19 +87,19 @@
           <!-- Page, data-page contains page name-->
           <div data-page="index-1" class="page">
 
-<div class="navbar">
-    <div class="navbar-inner">
-        <div class="left">
-            <a href="#" class="link"><i class="fa fa-play"></i>&nbsp;Play(s)</a>
-        </div>
-        <div class="center">
-            <p id="headertext"></p>
-	</div>
-        <div class="right">
-            <a href="#" class="link open-panel"><i class="fa fa-bars"></i></a>
-        </div>
-    </div>
-</div>   
+		<div class="navbar">
+		    <div class="navbar-inner">
+			<div class="left">
+			    <a href="#" class="link"><i class="fa fa-play"></i>&nbsp;Play(s)</a>
+			</div>
+			<div class="center">
+			    <p id="headertext"></p>
+			</div>
+			<div class="right">
+			    <a href="#" class="link open-panel"><i class="fa fa-bars"></i></a>
+			</div>
+		    </div>
+		</div>   
 
             <!-- Scrollable page content-->
             <div class="page-content">
@@ -63,7 +107,7 @@
               <div class="content-block">
               
               </div>
-              <div class="content-block"><p id="deviceProp"></p>
+              <div class="content-block">
 <ul id="teaser">
 <li>crowd sourcing</li> <li>gamification</li> <li>social editing</li>
 </ul>
@@ -90,6 +134,30 @@ now UUID used for identification, so no sign in or registation needed
         </div>
       </div>
     </div>
+
+  	  <div class="popup popup-highscore">
+	    <div class="content-block">
+	      <div class="closebtn"><a href="#" class="close-popup"><i class="fa fa-times"></i></a></div>
+	      <h1>Highscore list</h1>
+
+	      	<div class="content-block-title"></div>
+		    <div class="list-block" id="highscore"></div>
+		  </div>
+	    </div>
+	  </div>
+  	  <div class="popup popup-contributions">
+	    <div class="content-block">
+	      <div class="closebtn"><a href="#" class="close-popup"><i class="fa fa-times"></i></a></div>
+	      <h1>Your Contributions</h1>
+	      	<div class="content-block-title"></div>
+			<div id="contributions">
+<div class="row" id="r1"></div>
+<div class="row" id="r2"></div>
+<div class="row" id="r3"></div>
+			</div>
+		  </div>
+	    </div>
+	  </div>
 	<script src="cordova.js"></script>
 	<script type="text/javascript" src="js/framework7.min.js"></script>
 	<script type="text/javascript" src="js/jquery.js"></script>
