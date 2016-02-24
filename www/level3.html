@@ -1,0 +1,36 @@
+<div class="pages">
+  <div data-page="level3" class="page">
+
+	<div class="navbar">
+	  <div class="navbar-inner">
+	    <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a></div>
+	    <div class="center sliding" id="lvl2head">Level 3</div>
+		<div class="right">
+			<a href="#" id="sortbtn" class="link" onclick="lvl3sort()"><i class="fa fa-sort-alpha-asc"></i></a>
+			<a href="#" class="link open-panel"><i class="fa fa-bars"></i></a>
+		</div>
+	  </div>
+	</div>    
+
+	<div class="toolbar toolbar-bottom">
+	    <div class="toolbar-inner iconline" id="lvl3toolbar">
+		<a href="#" class="link disabled" id="lvl3done" onclick="lvl3done()"><i class="fa fa-check-square-o"></i> DONE</a>
+		<a href="#" class="link" onclick="lvl3reset()"><i class="fa fa-refresh"></i> RESET</a>
+	    </div>
+	</div>
+
+	<div class="page-content">
+	 <div class="content-block-title"><!-- helper for toolbaar height --></div>
+	 <div class="content-block-title">Wer gehört zu...</div>
+<div class="card">
+  <div class="card-content">
+    <div class="card-content-inner"><span id="lvl3group"></span></div>
+  </div>
+</div>
+<div class="list-block-label"><span id="author"></span>: <span id="title"></span></div>
+	<div class="list-block no-ripple" id="speakerlist">
+</div>
+	<p id="centerprogress"><span class="progressbar-infinite"></span></p>
+	</div>
+  </div>
+</div>

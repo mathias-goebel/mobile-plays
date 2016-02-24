@@ -1,0 +1,31 @@
+<div class="pages">
+  <div data-page="level2" class="page">
+
+	<div class="navbar">
+	  <div class="navbar-inner">
+	    <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span></span></a></div>
+	    <div class="center sliding" id="lvl2head">Level 2</div>
+		<div class="right">
+			<a href="#" id="sortbtn" class="link" onclick="lvl2sort()"><i class="fa fa-sort-alpha-asc"></i></a>
+			<a href="#" class="link open-panel"><i class="fa fa-bars"></i></a>
+		</div>
+	  </div>
+	</div>    
+
+	<div class="toolbar toolbar-bottom">
+	    <div class="toolbar-inner iconline" id="lvl2toolbar">
+		<a href="#" class="link disabled" id="lvl2done" onclick="lvl2done()"><i class="fa fa-check-square-o"></i> DONE</a>
+		<a href="#" class="link" onclick="lvl2reset()"><i class="fa fa-refresh"></i> RESET</a>
+	    </div>
+	</div>
+
+	<div class="page-content">
+	 <div class="content-block-title"><!-- helper for toolbaar height --></div>
+	 <div class="content-block-title">Remove all groups! (swipe >>>)</div>
+	    <div class="list-block-label"><span id="author"></span>: <span id="title"></span></div>
+	    	<div class="list-block no-ripple" id="speakerlist">
+	    </div>
+	<p id="centerprogress"><span class="progressbar-infinite"></span></p>
+	</div>
+  </div>
+</div>
