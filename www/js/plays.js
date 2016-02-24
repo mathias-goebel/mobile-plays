@@ -30,6 +30,7 @@ if ( app ) {
 	var uuid;
 	var hslist;
 	var uname;
+	var ids;
 
 function onDeviceReady() {
 	var element = document.getElementById('deviceProp');
@@ -401,6 +402,7 @@ function lvl2get(reload){
 		title = data.title;
 		speaker = data.speaker;
 		marked = data.marked;
+		ids = data.ids;
 		lvl2go();
 	});
 };
@@ -473,4 +475,32 @@ function lvl2next(){
 };
 function lvl2sort(){
 	lvl1sort();
+};
+
+///////////////
+//  LEVEL 3  //
+///////////////
+
+$$(document).on('pageInit', '.page[data-page="level3"]', function (e) {
+	lvl3get();
+	$$('#speakerlist').change(function(){ lvl1checksave(); });
+});
+function lvl3get(reload){
+	 if(reload === 'true'){ var parameter = {uuid:uuid, id:id} } else {  var parameter =  {uuid:uuid} };
+	$.getJSON("https://personae.gcdh.de/ajax/level3.xql", parameter)
+	.done(function( data ) {
+		id = data.id;
+		author = data.author;
+		title = data.title;
+		speaker = data.speaker;
+		marked = data.marked;
+		lvl3go();
+
+
+
+
+
+"marked":['||string-join($marked, ',')||'],
+"group":
+	});
 };
