@@ -495,12 +495,5 @@ function lvl3get(reload){
 		speaker = data.speaker;
 		marked = data.marked;
 		lvl3go();
-
-
-
-
-
-"marked":['||string-join($marked, ',')||'],
-"group":
 	});
 };
