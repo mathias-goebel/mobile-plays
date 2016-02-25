@@ -1,3 +1,8 @@
+div#highscore.list-block div.item-after {
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
 #speakerlist {
     margin-bottom: 60px;
 }
