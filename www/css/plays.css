@@ -21,7 +21,9 @@ div.item-inner div.item-after.accordion-item-toggle span.badge {
 .bg-blue {
     background-color: #2196f3 !important;
 }
-.group0 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group1 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group2 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group3 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group4 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group5 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group6 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group7 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group8 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group9 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group10 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group11 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group12 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group13 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group14 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group15 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group16 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group17 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group18 div.swipeout-actions-right a.swipeout.bg-blue.ripple { background-color: #f44336 !important; }
+.group div.swipeout-actions-right a.swipeout.bg-blue.ripple {
+	background-color: #f44336 !important;
+}
 #contributions > .row > .col-25 {
     min-height: 110px;
     max-height: 110px;
