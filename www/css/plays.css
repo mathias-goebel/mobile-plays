@@ -3,6 +3,10 @@ div#highscore.list-block div.item-after {
     right: 0;
     top: 10px;
 }
+#groupcard {
+    height: 130px;
+    overflow: auto;
+}
 #speakerlist {
     margin-bottom: 60px;
 }
