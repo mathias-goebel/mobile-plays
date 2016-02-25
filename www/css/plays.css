@@ -1,3 +1,27 @@
+#speakerlist {
+    margin-bottom: 60px;
+}
+.card-header > span {
+    position: absolute;
+    right: 15px;
+    top:15px;
+}
+div.item-inner div.item-after.accordion-item-toggle span.badge {
+    position: absolute;
+    right: 15px;
+    /* top: 9px; */
+}
+.lvl2 .badge {
+    top: 10px;
+/* fixes height issue in level 2 list :-( */
+}
+.list-block.no-ripple.lvl2 {
+    margin-bottom: 100px;
+}
+.bg-blue {
+    background-color: #2196f3 !important;
+}
+.group0 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group1 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group2 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group3 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group4 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group5 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group6 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group7 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group8 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group9 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group10 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group11 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group12 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group13 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group14 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group15 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group16 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group17 div.swipeout-actions-right a.swipeout.bg-blue.ripple, .group18 div.swipeout-actions-right a.swipeout.bg-blue.ripple { background-color: #f44336 !important; }
 #contributions > .row > .col-25 {
     min-height: 110px;
     max-height: 110px;
@@ -107,15 +131,17 @@ ul#listselected {
 p.thisoccurence {
     font-weight: bold;
 }
-#buttonLevel1:before {content: "Level 1: ";}
-#buttonLevel2:before {content: "Level 2: ";}
-#buttonLevel3:before {content: "Level 3: ";}
-#buttonLevel1:after {content: " A = B";}
-#buttonLevel2:after {content: " A(B,C,D)";}
-#buttonLevel3:after {content:  "\f222 | \f221"; font-family: "FontAwesome";}
+#buttonLevel1:before {content: "Level 1: "; left: 10px; position: absolute;}
+#buttonLevel2:before {content: "Level 2: "; left: 10px; position: absolute;}
+#buttonLevel3:before {content: "Level 3: "; left: 10px; position: absolute;}
+#buttonLevel4:before {content: "Level 4: "; left: 10px; position: absolute;}
+#buttonLevel1:after {content: " \f007  =  \f007"; font-family: "FontAwesome"; font-size: 1.7em;}
+#buttonLevel2:after {content: " \f0c0"; font-family: "FontAwesome"; font-size: 1.7em;}
+#buttonLevel3:after {content: " \f0c0 \f234"; font-family: "FontAwesome"; font-size: 1.7em;}
+#buttonLevel4:after {content:  "\f222 | \f221"; font-family: "FontAwesome"; font-size: 1.7em;}
 ul#teaser {
     list-style: none;
-	padding-left:0;
+    padding-left:0;
 }
 #teaser > li:first-child {
     font-weight: 800;
@@ -128,7 +154,7 @@ ul#teaser {
     text-align: center;
 }
 #teaser > li:nth-child(3) {
-	font-family: sans-serif-light;
+    font-family: sans-serif-light;
     font-weight: 100;
     font-size: x-large;
     text-align: right;

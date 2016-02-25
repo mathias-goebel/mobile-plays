@@ -56,7 +56,7 @@ function onDeviceReady() {
 				    myApp.addNotification({
 					message: 'We fondly hope you like the randomly choosen nickname: '+uname,
 					onClose: function () {
-						    myApp.alert('Since this is the first time you visit Play(s) we like to recommend our tutorial. Unfortunatly it is not implemented yet...', 'Welcome to Play(s)!');
+						    myApp.alert('This is the first time you visit Play(s). We have choosen a random nickname from more then 20.000 different speaker names.', 'Welcome to Play(s)!');
 						}
 				    });
 			} else { $( "#welcome" ).append( " back, "+uname+"!" ); }
@@ -165,12 +165,29 @@ if (container.children('.progressbar-infinite').length){
 	simulateLoading();
 };
 
+// GENERIC HELP TOGGLE
+function helptoggle(){
+$$('#helptoggle').on('click', function(){
+	if($$('#helptoggle > i').hasClass('fa-chevron-up')){
+		$$('#lvl1helpcontent').css('display', 'none');
+		$$('#helptoggle > i').addClass('fa-chevron-down');
+		$$('#helptoggle > i').removeClass('fa-chevron-up');
+	}
+	else {
+		$$('#lvl1helpcontent').css('display', 'block');
+		$$('#helptoggle > i').addClass('fa-chevron-up');
+		$$('#helptoggle > i').removeClass('fa-chevron-down');
+	}
+ });
+}
+
 ///////////////
 //  LEVEL 1  //
 ///////////////
 
 $$(document).on('pageInit', '.page[data-page="level1"]', function (e) {
 	lvl1get();
+	helptoggle();
 	$$('#speakerlist').change(function(){ lvl1checksave(); });
 });
 
@@ -388,6 +405,10 @@ else if($('#sortbtn > i').attr('class') === 'fa fa-sort-numeric-asc'){
 //  LEVEL 2  //
 ///////////////
 
+// TODO: Aktion für remove neu vergeben, ohne remove und mit einfärben
+// TODO: Aktion für new Agg neu vergeben, Gruppe wegnehmen
+
+
 $$(document).on('pageInit', '.page[data-page="level2"]', function (e) {
 	lvl2get();
 	$$('#speakerlist').change(function(){ lvl1checksave(); });
@@ -415,7 +436,7 @@ function lvl2go(){
 + "<div class='item-inner'><div class='item-title'>" + val + "</div><div class='item-after accordion-item-toggle'><span class='badge'>txt</span></div></div>"
 + "</div>"
 + "<div class='accordion-item-content'><div class='content-block' id='lvl2texts"+ key +"'><p>loading data...</p></div></div>"
-+ " <div class='swipeout-actions-right' style='display:none;'><a href='#' class='swipeout-delete bg-red ripple'>Remove</a></div></li>" );
++ " <div class='swipeout-actions-right' style='display:none;'><a href='#' class='swipeout bg-blue ripple'><i class='fa fa-users'></i></a></div></li>" );
 	});
 	$( "<ul/>", {
 		"class": "speaker-list",
@@ -424,8 +445,8 @@ function lvl2go(){
 	$('#title').append( title );
 	$('#author').append( author );
 	$.each(marked, function(k, v){
-	    $('#'+v).addClass('group'+k);
-	    $('#'+v).removeClass('swipeout');
+		$('#'+v).addClass('group'+k);
+
 	});
 	$('#centerprogress').hide(function(){
 				setTimeout(function(){ $('#lvl2reset, #lvl2done').removeClass( 'disabled' ); }, 3000);	
@@ -483,17 +504,22 @@ function lvl2sort(){
 
 $$(document).on('pageInit', '.page[data-page="level3"]', function (e) {
 	lvl3get();
-	$$('#speakerlist').change(function(){ lvl1checksave(); });
+	helptoggle();
 });
+
+var index;
+var obj;
+
 function lvl3get(reload){
 	 if(reload === 'true'){ var parameter = {uuid:uuid, id:id} } else {  var parameter =  {uuid:uuid} };
 	$.getJSON("https://personae.gcdh.de/ajax/level3.xql", parameter)
 	.done(function( data ) {
-		id = data.id;
-		author = data.author;
-		title = data.title;
-		speaker = data.speaker;
-		marked = data.marked;
-		lvl3go();
+		var agg= parseInt(data.aggs[0]);
+		console.log( agg );
+		var k;
+		var id;
+		for (k = data.ids.length - 1; k >= 0; --k) { if( data.ids[k] === agg ){ id=k }}
+		console.log( id );
+		$$('#lvl3group').text( data.speaker[ id ] );
 	});
 };
