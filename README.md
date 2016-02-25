@@ -6,6 +6,8 @@ Tauche ein in die Welt der Dramen und lerne alles über die großen Sprecher und
 In Play(s) durchläufst du verschiedene Level in denen dir unterschiedliche Aufgaben gestellt werden. So sollen z.B. in Level 1 identische Sprecherinstanzen markiert und gespeichert werden. Für jede Markierung bekommst du Punkte, die deinem Konto zugeschrieben werden. Entscheiden andere Spieler genau wie du, bekommst du selber auch mehr Punkte und gelangst so schneller in höhere Level mit komplexeren Aufgaben die dir wiederum mehr Punkte bringen. 
 So sollen z.B. Sprechergruppen identifiziert werden und später in einzelne Sprecherelemente aufgelöst werden oder ein Gender-Attribut vergeben werden.
 
+Play(s) ist frei zugänglich und erfordert keine speziellen Berechtigung, du brauchst also keine Angst um deine persönlichen Daten zu haben. 
+
 
 
 
