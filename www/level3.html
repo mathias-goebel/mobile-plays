@@ -12,8 +12,8 @@
 	</div>
 	<div class="toolbar toolbar-bottom">
 	    <div class="toolbar-inner iconline" id="lvl3toolbar">
-		<a href="#" class="link disabled" id="lvl3done" onclick="lvl3done()"><i class="fa fa-check-square-o"></i> DONE</a>
-		<a href="#" class="link" onclick="lvl3reset()"><i class="fa fa-refresh"></i> RESET</a>
+		<a href="#" class="link disabled" id="lvl3save" onclick="lvl3done()"><i class="fa fa-check-square-o"></i> SAVE</a>
+		<a href="#" class="link" onclick="lvl3reset()"><i class="fa fa-refresh"></i> RELOAD</a>
 	    </div>
 	</div>
 	<div class="page-content">
@@ -26,15 +26,13 @@
   </div>
 </div>
 
-<div class="card">
+<div class="card" id="groupcard">
   <div class="card-content">
-    <div class="card-content-inner"><span id="lvl3group"></span></div>
+    <div class="card-content-inner"><span id="lvl3group"></span><ul id="groupitems"/></div>
   </div>
 </div>
-<div class="list-block-label"><span id="author"></span>: <span id="title"></span></div>
-	<div class="list-block no-ripple" id="speakerlist">
-</div>
+<div class="list-block no-ripple" id="speakerlist"></div>
 	<p id="centerprogress"><span class="progressbar-infinite"></span></p>
-	</div>
+  </div>
   </div>
 </div>
