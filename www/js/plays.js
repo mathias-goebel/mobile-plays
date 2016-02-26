@@ -31,6 +31,7 @@ var uuid;
 var hslist;
 var uname;
 var ids;
+
 function onDeviceReady() {
   var element = document.getElementById('deviceProp');
   if (typeof device === 'undefined') {
@@ -441,17 +442,13 @@ function lvl1sort() {
 $$(document).on('pageInit', '.page[data-page="level2"]', function (e) {
   helptoggle();
   lvl2get();
-  $$('.group.swipeout-opened.transitioning div.swipeout-actions-right.swipeout-actions-opened').on('click', function () {
-    var group = $('#' + removeId).attr('class').split(' ') [2];
-    $$(this).parent().removeClass(group); // removes numbered group
-    $$(this).parent().removeClass('group');
-  });
   $$('#speakerlist').change(function () {
     lvl1checksave();
   });
 });
 function lvl2get(reload) {
   if (reload === 'true') {
+    $('#speakerlist, #author, #title').empty();
     var parameter = {
       uuid: uuid,
       id: id
@@ -480,7 +477,7 @@ function lvl2go() {
     + '<div class=\'item-inner\'><div class=\'item-title\'>' + val + '</div><div class=\'item-after accordion-item-toggle\'><span class=\'badge\'>txt</span></div></div>'
     + '</div>'
     + '<div class=\'accordion-item-content\'><div class=\'content-block\' id=\'lvl2texts' + ids[key-1] + '\'><p>loading data...</p></div></div>'
-    + ' <div class=\'swipeout-actions-right\' style=\'display:none;\'><a href=\'#\' class=\'swipeout bg-blue ripple\'><i class=\'fa fa-users\'></i></a></div></li>');
+    + ' <div class=\'swipeout-actions-right\' style=\'display:none;\'><a href=\'#\' class=\'swipeout bg-blue ripple addagg\'><i class=\'fa fa-users\'></i></a></div></li>');
   });
   $('<ul/>', {
     'class': 'speaker-list',
@@ -492,19 +489,46 @@ function lvl2go() {
     $('#' + v).addClass('group' + k);
     $('#' + v).addClass('group');
   });
+  $$('.group a').addClass('rm');
+  $$('.group a').removeClass('addagg');
+  $('.rm').on('click', function () {
+    var aggkey = $$(this).parent().parent().attr('id');
+    var group = $$(this).parent().parent().attr('class').split(' ')[2];
+    $$(this).parent().parent().removeClass('group');
+    $$(this).parent().parent().removeClass(group);
+    $.getJSON('https://personae.gcdh.de/ajax/lvl2rm.xql', {
+      num: id,
+      key: aggkey,
+      uuid: uuid
+    }).done(function(data){
+        $('#uscore').html(data.score);
+        $$(this).addClass('addagg');
+        $$(this).removeClass('rm');
+    });
+    });
+  $('.addagg').on('click', function () {
+    var aggkey = $$(this).parent().parent().attr('id');
+    var groups=$('.group').map(function() {  return parseInt($(this).attr("class").split(' ')[2].replace('group', '')); });
+    var mingroup= Math.min.apply(null, groups);
+    if(mingroup === 0){ var minfreegroup= Math.max.apply(null, groups) + 1 } else { var minfreegroup= 0 }
+    $.getJSON('https://personae.gcdh.de/ajax/lvl2agg.xql', {
+      num: id,
+      key: aggkey,
+      uuid: uuid
+    }).done(function(data){
+	$('#uscore').html(data.score);
+	$$(this).addClass('rm');
+	$$(this).removeClass('addagg');
+	$$(this).parent().parent().addClass('group');
+	$$(this).parent().parent().addClass('group'+minfreegroup);
+	});
+    });
   $('#centerprogress').hide(function () {
     setTimeout(function () {
       $('#lvl2reset, #lvl2done').removeClass('disabled');
     }, 3000);
   });
-  $$('.swipeout').on('deleted', function () {
-    var aggkey = $$(this).attr('id');
-    $.getJSON('https://personae.gcdh.de/ajax/lvl2agg.xql', {
-      num: id,
-      key: aggkey,
-      uuid: uuid
-    })
-  });
+
   $$('.accordion-item-toggle').on('click', function () {
     var kkey = $$(this).parent().parent().parent().attr('id');
     $.getJSON('https://personae.gcdh.de/ajax/level1texts.xql', {
