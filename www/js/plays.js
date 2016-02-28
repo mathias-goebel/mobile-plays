@@ -372,7 +372,6 @@ function lvl1save() {
       var j = lis[i].classList[2].substr(5, 2);
       if (j > num) {
         num = j;
-        console.log(j);
       }
     }
     var newnum = parseInt(num) + 1;
@@ -468,6 +467,20 @@ function lvl2get(reload) {
     lvl2go();
   });
 };
+
+function aggclick(key){
+if($('#'+key).hasClass('group')){
+	var group=$('#' + key).attr('class').split(' ') [2];
+	$('#'+key).removeClass('group');
+	$('#'+key).removeClass(group);
+}
+else {
+	var nxtgroup=$('.group').length;
+	$('#'+key).addClass('group');
+	$('#'+key).addClass('group'+ nxtgroup);
+}
+};
+
 function lvl2go() {
   var items = [
   ];
@@ -477,7 +490,7 @@ function lvl2go() {
     + '<div class=\'item-inner\'><div class=\'item-title\'>' + val + '</div><div class=\'item-after accordion-item-toggle\'><span class=\'badge\'>txt</span></div></div>'
     + '</div>'
     + '<div class=\'accordion-item-content\'><div class=\'content-block\' id=\'lvl2texts' + ids[key-1] + '\'><p>loading data...</p></div></div>'
-    + ' <div class=\'swipeout-actions-right\' style=\'display:none;\'><a href=\'#\' class=\'swipeout bg-blue ripple addagg\'><i class=\'fa fa-users\'></i></a></div></li>');
+    + ' <div class=\'swipeout-actions-right\' style=\'display:none;\'><a onclick="aggclick(' + ids[key-1] + ')" href=\'#\' class=\'swipeout bg-blue ripple addagg\'><i class=\'fa fa-users\'></i></a></div></li>');
   });
   $('<ul/>', {
     'class': 'speaker-list',
@@ -491,38 +504,7 @@ function lvl2go() {
   });
   $$('.group a').addClass('rm');
   $$('.group a').removeClass('addagg');
-  $('.rm').on('click', function () {
-    var aggkey = $$(this).parent().parent().attr('id');
-    var group = $$(this).parent().parent().attr('class').split(' ')[2];
-    $$(this).parent().parent().removeClass('group');
-    $$(this).parent().parent().removeClass(group);
-    $.getJSON('https://personae.gcdh.de/ajax/lvl2rm.xql', {
-      num: id,
-      key: aggkey,
-      uuid: uuid
-    }).done(function(data){
-        $('#uscore').html(data.score);
-        $$(this).addClass('addagg');
-        $$(this).removeClass('rm');
-    });
-    });
-  $('.addagg').on('click', function () {
-    var aggkey = $$(this).parent().parent().attr('id');
-    var groups=$('.group').map(function() {  return parseInt($(this).attr("class").split(' ')[2].replace('group', '')); });
-    var mingroup= Math.min.apply(null, groups);
-    if(mingroup === 0){ var minfreegroup= Math.max.apply(null, groups) + 1 } else { var minfreegroup= 0 }
-    $.getJSON('https://personae.gcdh.de/ajax/lvl2agg.xql', {
-      num: id,
-      key: aggkey,
-      uuid: uuid
-    }).done(function(data){
-	$('#uscore').html(data.score);
-	$$(this).addClass('rm');
-	$$(this).removeClass('addagg');
-	$$(this).parent().parent().addClass('group');
-	$$(this).parent().parent().addClass('group'+minfreegroup);
-	});
-    });
+
   $('#centerprogress').hide(function () {
     setTimeout(function () {
       $('#lvl2reset, #lvl2done').removeClass('disabled');
@@ -548,10 +530,12 @@ function lvl2go() {
 };
 function lvl2done() {
   $('#lvl2done').addClass('disabled');
+  var keys = $('.group').map(function(){ return $(this).attr('id') }).get().join(';');
   $.getJSON('https://personae.gcdh.de/ajax/lvl2done.xql', {
     done: 1,
     num: id,
-    uuid: uuid
+    uuid: uuid,
+     kv: keys
   }).done(function (data) {
     $('#uscore').html(data.score);
     myApp.addNotification({
@@ -579,6 +563,13 @@ function lvl2sort() {
 ///////////////
 //  LEVEL 3  //
 ///////////////
+
+var ids;
+var aggs;
+var aggId;
+
+var aggNum = 0; // Laufvariable für agg array
+
 $$(document).on('pageInit', '.page[data-page="level3"]', function (e) {
   lvl3get();
   helptoggle();
@@ -586,8 +577,7 @@ $$(document).on('pageInit', '.page[data-page="level3"]', function (e) {
     lvl3checksave();
   });
 });
-var k;
-var id;
+
 function lvl3get(reload) {
   if (reload === 'true') {
     var parameter = {
@@ -600,32 +590,43 @@ function lvl3get(reload) {
     }
   };
   $.getJSON('https://personae.gcdh.de/ajax/level3.xql', parameter).done(function (data) {
-    var agg = parseInt(data.aggs[0]);
-    for (k = data.ids.length - 1; k >= 0; --k) {
-      if (data.ids[k] === agg) {
-        id = k
-      }
+    aggs=data.aggs;
     speaker=data.speaker;
-    }
-    $$('#lvl3group').text(data.speaker[id]);
-    $$('#centerprogress').hide();
-    lvl3list();
+    ids=data.ids;
+    id=data.id;
+    lvl3go(aggNum);
   });
 };
-function lvl3list() {
+
+function lvl3go(num){
+  var k;
+  var agg= aggs[num];
+  for (k = ids.length; k >= 0; --k) {
+    if (ids[k] === agg) {
+      aggId = k
+    }
+  }
+// aggId = id of aggregation in speaker array
+  $$('#lvl3group').text(speaker[aggId]);
+	console.log('attached id '+aggId)
+  $$('#centerprogress').hide();
+  lvl3list(aggId);
+}
+
+function lvl3list(aggId) {
+  $('#speakerlist').empty();
   var items = [
   ];
   $.each(speaker, function (key, val) {
-    key = key + 1;
-    var thisone;
-    if(key === id+1){ thisone='group0' };
-    items.push('<li class=\'accordion-item '+ thisone +'\' id=\'' + key + '\'><div class=\'swipeout-content\'>'
+    var thisone='';
+    if(key === aggId){ thisone=' group0' };
+    items.push('<li class=\'accordion-item'+ thisone +'\' id=\'' + ids[key] + '\'><div class=\'swipeout-content\'>'
     + '<label class=\'label-checkbox item-content no-ripple\'>'
     + '<input type=\'checkbox\' name=\'level1\' value=\'' + key + '\'>'
     + '<div class=\'item-media\'><i class=\'icon icon-form-checkbox\'></i></div>'
     + '<div class=\'item-inner\'><div class=\'item-title\'>' + val + '</div><div class=\'item-after accordion-item-toggle\'><span class=\'badge\'>txt</span></div></div>'
     + '</label></div>'
-    + '<div class=\'accordion-item-content\'><div class=\'content-block\' id=\'lvl1texts' + key + '\'><p>loading data...</p></div></div>'
+    + '<div class=\'accordion-item-content\'><div class=\'content-block\' id=\'lvl1texts' + ids[key] + '\'><p>loading data...</p></div></div>'
     + ' <div class=\'swipeout-actions-right\' style=\'display:none;\'><a href=\'#\' class=\'lvl3remove bg-red ripple\'>Remove</a></div></li>');
   });
   $('<ul/>', {
@@ -633,6 +634,7 @@ function lvl3list() {
     html: items.join('')
   }).appendTo('#speakerlist');
 };
+
 function lvl3checksave() {
   if ($('input:checked').map(function () {
     return this.value;
@@ -660,9 +662,9 @@ function lvl3done(){
   $('#lvl3done').addClass('disabled');
   var agents = $('input:checked').map(function () {return this.value;}).get().join(';');
   $.getJSON('https://personae.gcdh.de/ajax/lvl3done.xql', {
-    agg: id,
+    agg: aggs[aggNum],
     uuid: uuid,
-    num: 200,
+    num: id,
     agents: agents
   }).done(function (data) {
     $('#uscore').html(data.score);
@@ -679,8 +681,21 @@ function lvl3done(){
   });
 }
 
+function lvl3skip(){
+$.getJSON('https://personae.gcdh.de/ajax/lvl3aggskipped.xql', {
+    agg: aggs[aggNum],
+    uuid: uuid,
+    num: id
+  }).done(function() {
+        lvl3next();
+  });
+}
+
 function lvl3next(){
-id=1;
-lvl3get(reload)
+$('input:checkbox').removeAttr('checked');
+$('.group0').removeClass('group0');
+$('#groupitems').empty();
+aggNum++;
+lvl3go(aggNum);
 }
 

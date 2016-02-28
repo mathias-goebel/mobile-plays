@@ -1,3 +1,7 @@
+div.swipeout-actions-right > a > i.fa-users {
+    padding-left: 25px;
+    padding-right: 25px;
+}
 div#highscore.list-block div.item-after {
     position: absolute;
     right: 0;
