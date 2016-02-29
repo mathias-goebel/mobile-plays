@@ -63,16 +63,12 @@
 
 <div class="card"><a href="#view-2" id="hslistbtn" data-popup=".popup-contributions" class="item-content open-popup">
 <div class="card-header">Your Contributions</div>
-<div class="card-content">
-</div></a>
+<div class="card-content"></div></a>
 </div> <!-- Contributions -->
 
-<div class="card">
+<div class="card"><a href="#view-2" id="hslistbtn" data-popup=".popup-account" class="item-content open-popup">
 <div class="card-header">Your Account</div>
-<div class="card-content">
-        <p>Device Properties:</p>
-	<p id="deviceProp"></p>
-</div>
+<div class="card-content"></div></a>
 </div> <!-- Account -->
 
       </div>
@@ -145,6 +141,7 @@ now UUID used for identification, so no sign in or registation needed
 		  </div>
 	    </div>
 	  </div>
+
   	  <div class="popup popup-contributions">
 	    <div class="content-block">
 	      <div class="closebtn"><a href="#" class="close-popup"><i class="fa fa-times"></i></a></div>
@@ -158,6 +155,78 @@ now UUID used for identification, so no sign in or registation needed
 		  </div>
 	    </div>
 	  </div>
+
+  	  <div class="popup popup-account">
+	    <div class="content-block">
+	      <div class="closebtn"><a href="#" class="close-popup"><i class="fa fa-times"></i></a></div>
+	      <h1>Your Account</h1>
+	      	<div class="content-block-title">Nickname</div>
+			<p id="acc-nickname"></p>
+	      	<div class="content-block-title">Device Properties</div>
+		  <p id="deviceProp"></p>
+		</div>
+	    </div>
+	  </div>
+
+
+<!-- Popover for Tutorial -->
+<!-- LeVeL 1: -->
+  <div class="popover popover-head">
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+      <div class="content-block">
+        <h3>Welcome to Level 1</h3>
+<h4>Your task: Find simple <em>is</em>-relations</h4>
+        <p>In general your task in this level is to select items in the list, that appear to be the same speaker. Select the items speakerwise, and click [<i class="fa fa-link"></i> MERGE] at the bottom, when you identified a single one, that comes with more then one name. Please ignore groups except they are named differntly. "ROBERT UND HELFER" is the same as "HELFER UND ROBERT" so please merge these items, but do not merge "ROBERT" with "ROBERT UND HELFER".</p>
+	<p>For example if a list contains "ODOARDO" and "ODOARDO GALOTTI", select those two and click [<i class="fa fa-link"></i> MERGE].</p>
+	<p>You think that there is nothing more to do in this play? Click [<i class="fa fa-check-square-o"></i> DONE].</p>
+      </div>
+    </div>
+  </div>
+  <div class="popover popover-sort">
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+      <div class="content-block">
+        <h4>Sorting the list</h4>
+        <p>Sometimes it helps when you sort the list in order of the alphabet. Click on the item [<i class="fa fa-sort-alpha-asc"></i>] in the upper toolbar and click again if you want to go back to the order of appearance.</p>
+      </div>
+    </div>
+  </div>
+  <div class="popover popover-skip">
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+      <div class="content-block">
+        <h4>Skip a play</h4>
+        <p>You can click on [<i class="fa fa-step-forward"></i> NEXT] to skip a play.</p>
+      </div>
+    </div>
+  </div>
+<!-- LeVeL 2: -->
+  <div class="popover popover-head2">
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+      <div class="content-block">
+        <h3>Welcome to Level 2</h3>
+<h4>Your task: Mark all groups, aggregations and items, where more than one actor speak.</h4>
+        <p>In our dramas you often can find aggregations or groups as speakers. In this level your task is to mark all of these instances. To mark an instance as an aggregation or group you have to wipe the element to the left until you can see the <em>group</em>-icon. Click on the icon to mark the element as an aggregation or to remove your selection. An already marked element will have a red <em>group</em>-icon.</p>
+	<p>You think that there is nothing more to do in this play? Click [<i class="fa fa-check-square-o"></i> DONE].</p>
+      </div>
+    </div>
+  </div>
+<!-- LeVeL 3: -->
+  <div class="popover popover-head3">
+    <div class="popover-angle"></div>
+    <div class="popover-inner">
+      <div class="content-block">
+        <h3>Welcome to Level 3</h3>
+<h4>Your task: Mark all items, that belong to the highlighted group.</h4>
+Now as you are aware of aggregations and groups within the speaker instances the next challenge for you is to further specify and resolve them. For example in some cases we know exactly who is behind <em>Beide</em> or <em>Alle</em>. One easy case would be elements like <em>Frau Fluthe und Frau Page</em>. The only thing you have to do here is to tell us that <em>Frau Fluthe und Frau Page</em>=<em>Frau Fluthe</em> + <em>Frau Page</em>.There will be aggregations or groups you cannot further specify because of missing details. In this case you can just tell that you have <em>no clue</em>.</p>
+      </div>
+    </div>
+  </div>
+<!-- end Popover for Tutorial -->
+
+
 	<script src="cordova.js"></script>
 	<script type="text/javascript" src="js/framework7.min.js"></script>
 	<script type="text/javascript" src="js/jquery.js"></script>

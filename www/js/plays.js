@@ -1,23 +1,24 @@
 // Play(s) main javascript file
 //
-
 // app or browser
 var app = document.URL.indexOf('http://') === - 1 && document.URL.indexOf('https://') === - 1;
 if (app) {
   document.addEventListener('deviceready', onDeviceReady, false);
 } else {
   onDeviceReady();
+  window.onbeforeunload = function() { return "To go from within a level to the main menu please use the back button in the upper toolbar."; };
 }
-// back button
 
+// back button
 document.addEventListener('backbutton', onBackKeyDown, false);
+
 // Framework7
-var myApp = new Framework7({
+var plays = new Framework7({
   material: true,
   swipePanel: 'left'
 });
 var $$ = Dom7;
-var view1 = myApp.addView('#view-1');
+var view1 = plays.addView('#view-1');
 // global var
 var device;
 var backi = 0;
@@ -31,6 +32,7 @@ var uuid;
 var hslist;
 var uname;
 var ids;
+var unew;
 
 function onDeviceReady() {
   var element = document.getElementById('deviceProp');
@@ -56,15 +58,16 @@ function onDeviceReady() {
     uname = data.name;
     if (unew === 1) {
       $('#welcome').append(' ' + uname + '!');
-      myApp.addNotification({
+      plays.addNotification({
         message: 'We fondly hope you like the randomly choosen nickname: ' + uname,
         onClose: function () {
-          myApp.alert('This is the first time you visit Play(s). We have choosen a random nickname from more then 20.000 different speaker names.', 'Welcome to Play(s)!');
+          plays.alert('This is the first time you visit Play(s). We have choosen a random nickname from more then 20.000 different speaker names. We hope you like the selection, but you can customize the name in your account settings.', 'Welcome to Play(s)!');
         }
       });
     } else {
       $('#welcome').append(' back, ' + uname + '!');
     }
+    $('#acc-nickname').html(uname);
     $('#uscore').html(data.score);
     $('#rank').html(data.rank);
     for (var i = 1; i <= data.level; i++) {
@@ -79,17 +82,17 @@ function getBoni(n) {
     uuid: uuid
   }).done(function (data) {
     if (data.news === 1) {
-      myApp.alert('+' + data.thisscore + 'points!!!1!', 'You have found a secret!');
+      plays.alert('+' + data.thisscore + 'points!!!1!', 'You have found a secret!');
     };
     $('#uscore').html(data.score);
   });
 };
 function onBackKeyDown() {
   if ($$('.popup').hasClass('modal-in')) {
-    myApp.closeModal();
+    plays.closeModal();
   } 
   else if ($$('body').hasClass('with-panel-left-reveal')) {
-    myApp.closePanel();
+    plays.closePanel();
   } 
   else if ($$('.page-on-center').length === 0 || $$('.page-on-center').attr('data-page') === 'index-1') {
     if (backi === 1) {
@@ -98,7 +101,7 @@ function onBackKeyDown() {
     } 
     else {
       backi++;
-      myApp.addNotification({
+      plays.addNotification({
         message: 'Tap twice to leave Play(s).',
         button: {
           text: 'No, thanks.'
@@ -165,17 +168,17 @@ $$('.popup-contributions').on('closed', function () {
 // progress bar on loading
 var container = $$('body');
 if (container.children('.progressbar-infinite').length) {
-  myApp.showProgressbar(container, 0, 'yellow');
+  plays.showProgressbar(container, 0, 'yellow');
   var progress = 0;
   function simulateLoading() {
     setTimeout(function () {
       var progressBefore = progress;
       progress += Math.random() * 20;
-      myApp.setProgressbar(container, progress);
+      plays.setProgressbar(container, progress);
       if (progressBefore < 100) {
         simulateLoading(); //keep "loading"
       } 
-      else myApp.hideProgressbar(container); //hide
+      else plays.hideProgressbar(container); //hide
     }, Math.random() * 200 + 200);
   }
   simulateLoading();
@@ -194,7 +197,27 @@ function helptoggle() {
       $$('#helptoggle > i').removeClass('fa-chevron-down');
     }
   });
-}
+};
+
+function tutorial(level){
+switch(level) {
+    case 1:
+        plays.popover('.popover-head', '#lvl1head');
+	$$('.popover-head').on('closed', function(){
+	plays.popover('.popover-sort', '#sortbtn');
+	});
+	$$('.popover-sort').on('closed', function(){
+	plays.popover('.popover-skip', '#lvl1next');
+	});
+        break;
+    case 2:
+        plays.popover('.popover-head2', '#lvl2head');
+    case 3:
+        plays.popover('.popover-head3', '#lvl3head');
+    default:
+} 
+};
+
 ///////////////
 //  LEVEL 1  //
 ///////////////
@@ -224,6 +247,7 @@ function lvl1get(reload) {
     speaker = data.speaker;
     marked = data.marked;
     lvl1go();
+    if(data.new){tutorial(1)}
   });
 };
 function lvl1reload() {
@@ -271,7 +295,7 @@ function lvl1go() {
       key: removeId,
       uuid: uuid
     }).done(function (data) {
-      myApp.swipeoutClose('#' + removeId);
+      plays.swipeoutClose('#' + removeId);
       var group = $('#' + removeId).attr('class').split(' ') [2];
       if ($('.' + group).length > 2) {
         $('#' + removeId + '> .swipeout-actions-right').css('display', 'none');
@@ -314,7 +338,7 @@ function lvl1done() {
     uuid: uuid
   }).done(function (data) {
     $('#uscore').html(data.score);
-    myApp.addNotification({
+    plays.addNotification({
       message: '+5 points! If other player validates your input, this score doubles!',
       button: {
         text: 'Next'
@@ -387,7 +411,7 @@ function lvl1save() {
       default:
         var msg = '+' + data.thisscore + 'points! If an other player validates your input, the score doubles.';
     }
-    myApp.addNotification({
+    plays.addNotification({
       message: msg,
       button: {
         text: 'Yeah!'
@@ -465,6 +489,7 @@ function lvl2get(reload) {
     marked = data.marked;
     ids = data.ids;
     lvl2go();
+    if(data.new){tutorial(2)}
   });
 };
 
@@ -538,7 +563,7 @@ function lvl2done() {
      kv: keys
   }).done(function (data) {
     $('#uscore').html(data.score);
-    myApp.addNotification({
+    plays.addNotification({
       message: 'Current Score: ' + data.score + 'points',
       button: {
         text: 'Next'
@@ -595,6 +620,7 @@ function lvl3get(reload) {
     ids=data.ids;
     id=data.id;
     lvl3go(aggNum);
+    if(data.new){tutorial(3)}
   });
 };
 
@@ -622,7 +648,7 @@ function lvl3list(aggId) {
     if(key === aggId){ thisone=' group0' };
     items.push('<li class=\'accordion-item'+ thisone +'\' id=\'' + ids[key] + '\'><div class=\'swipeout-content\'>'
     + '<label class=\'label-checkbox item-content no-ripple\'>'
-    + '<input type=\'checkbox\' name=\'level1\' value=\'' + key + '\'>'
+    + '<input type=\'checkbox\' name=\'level1\' value=\'' + ids[key] + '\'>'
     + '<div class=\'item-media\'><i class=\'icon icon-form-checkbox\'></i></div>'
     + '<div class=\'item-inner\'><div class=\'item-title\'>' + val + '</div><div class=\'item-after accordion-item-toggle\'><span class=\'badge\'>txt</span></div></div>'
     + '</label></div>'
@@ -638,7 +664,7 @@ function lvl3list(aggId) {
 function lvl3checksave() {
   if ($('input:checked').map(function () {
     return this.value;
-  }).get().length > 1) {
+  }).get().length > 0) {
     $$('#lvl3save').removeClass('disabled');
     lvl3items();
 
@@ -660,6 +686,8 @@ function lvl3items(){
 
 function lvl3done(){
   $('#lvl3done').addClass('disabled');
+  if( aggNum < aggs.length - 1 ) {var btntext='Next Group'}
+  if( aggNum >= aggs.length - 1 ) {var btntext='Next Play'} 
   var agents = $('input:checked').map(function () {return this.value;}).get().join(';');
   $.getJSON('https://personae.gcdh.de/ajax/lvl3done.xql', {
     agg: aggs[aggNum],
@@ -668,14 +696,15 @@ function lvl3done(){
     agents: agents
   }).done(function (data) {
     $('#uscore').html(data.score);
-    myApp.addNotification({
+    plays.addNotification({
       message: 'Current Score: ' + data.score + 'points',
       button: {
-        text: 'Next'
+        text: btntext
       },
       onClose: function () {
         $('#lvl3done').addClass('disabled');
-        lvl3next();
+        if( aggNum < aggs.length - 1 ) {lvl3next();}
+        if( aggNum >= aggs.length - 1 ) {lvl3prepare(); aggNum=0; lvl3get();}
       }
     });
   });
@@ -687,15 +716,119 @@ $.getJSON('https://personae.gcdh.de/ajax/lvl3aggskipped.xql', {
     uuid: uuid,
     num: id
   }).done(function() {
-        lvl3next();
+      if( aggNum < aggs.length - 1 ) {lvl3next();}
+      if( aggNum >= aggs.length - 1 ) {lvl3prepare(); aggNum=0; lvl3get();}
   });
 }
 
+function lvl3prepare(){
+  $('#lvl3group').empty();
+  $('input:checkbox').removeAttr('checked');
+  $('.group0').removeClass('group0');
+  $('#groupitems').empty();
+};
+
 function lvl3next(){
-$('input:checkbox').removeAttr('checked');
-$('.group0').removeClass('group0');
-$('#groupitems').empty();
+lvl3prepare();
 aggNum++;
 lvl3go(aggNum);
 }
 
+///////////////
+//  LEVEL 4  //
+///////////////
+$$(document).on('pageInit', '.page[data-page="level4"]', function (e) {
+  lvl4get();
+});
+
+function lvl4check(){
+  $('.gender').change(function () {
+    var t=$(this);
+    var val=$(this).find('input[type="radio"]:checked:enabled').attr('value');
+    if(val === '0'){lvl4rmClass(t); $(this).addClass('female')}
+    else if(val === '1'){lvl4rmClass(t); $(this).addClass('male')}
+    else if(val === '2'){lvl4rmClass(t); $(this).addClass('unknown'); $(this).find('li.lvl4switch').slideDown(); }
+    if($('input[type=radio]:checked').length === $('.gender').length){ $('#lvl4save').removeClass('disabled'); }
+    else { $('#lvl4save').addClass('disabled'); }
+  });
+};
+function lvl4rmClass(t){
+if(t.hasClass('female')){t.removeClass('female')}
+if(t.hasClass('male')){t.removeClass('male')}
+if(t.hasClass('unknown')){t.removeClass('unknown');  $(t).find('li.lvl4switch').slideUp();}
+};
+
+function lvl4get(){
+  $.getJSON('https://personae.gcdh.de/ajax/level4.xql', {
+    uuid: uuid,
+  }).done(function(data) {
+    $('#title').append(data.title);
+    $('#author').append(data.author);
+    id=data.id;
+    lvl4list(data);
+  });
+};
+
+function lvl4list(data){
+  $('#speakerlist').empty();
+    var items = [];
+    $.each(data.speaker, function (key, val) {
+      items.push("<div class='list-block gender'>"
+        + "<div class='content-block-title' id='"+ data.ids[key] +"'>"+ val + "</div>"
+        + "<ul>"
+        + "<li><label class='label-radio item-content no-ripple'>"
+        + "<input type='radio' name='id"+ data.ids[key] +"-radio' value='0' data-id='"+ data.ids[key] +"'>"
+        + "<div class='item-media'><i class='icon icon-form-radio'></i></div>"
+        + "<div class='item-inner'><div class='item-title'>female</div></div>"
+        + "</label></li>"
+        + "<li><label class='label-radio item-content no-ripple'>"
+        + "<input type='radio' name='id"+ data.ids[key] +"-radio' value='1' data-id='"+ data.ids[key] +"'>"
+        + "<div class='item-media'><i class='icon icon-form-radio'></i></div>"
+        + "<div class='item-inner'><div class='item-title'>male</div></div>"
+        + "</label></li>"
+        + "<li><label class='label-radio item-content no-ripple'>"
+        + "<input type='radio' name='id"+ data.ids[key] +"-radio' value='2' data-id='"+ data.ids[key] +"'>"
+        + "<div class='item-media'><i class='icon icon-form-radio'></i></div>"
+        + "<div class='item-inner'><div class='item-title'>unknown</div></div>"
+        + "</label></li>"
+        + "<li class='lvl4switch' style='display:none;'><div class='item-content'><div class='item-inner'><div class='item-input' style='width: 50px;'>"
+        + "<label class='label-switch'><input type='checkbox' data-id='"+ data.ids[key] +"'><div class='checkbox'></div></label>"
+        + "</div><div class='item-title label' style='width: 85.5%;'>is a human</div></div></div></li>"
+        + "</ul></div>"
+        );
+    });
+    $('<div/>', {
+    'class': 'speaker-list',
+    html: items.join('')
+  }).appendTo('#speakerlist');
+    $$('.lvl4switch').on('click', function(){ $(this).find('input').prop("checked", !$(this).find('input').prop("checked"));  })
+    lvl4check();
+};
+function lvl4done(){
+  var female=$('input[type=radio][value=0]:checked').map( function(){return $(this).attr('data-id')} ).get().join(';');
+  var male=$('input[type=radio][value=1]:checked').map( function(){return $(this).attr('data-id')} ).get().join(';');
+  var unknown=$('input[type=radio][value=2]:checked').map( function(){return $(this).attr('data-id')} ).get().join(';');
+  var human=$('input[type=checkbox]:checked').map( function(){return $(this).attr('data-id')} ).get().join(';');
+  $.getJSON('https://personae.gcdh.de/ajax/lvl4done.xql', {
+    uuid: uuid,
+    num: id,
+    f: female,
+    m: male,
+    u: unknown,
+    h: human
+  }).done(function(data) {
+    plays.addNotification({
+      message: 'Current Score: ' + data.score + 'points',
+      button: {
+        text: 'Next'
+      },
+      onClose: function () {
+        $('#lvl4save').addClass('disabled');
+        $('#title').empty();
+        $('#author').empty();
+        lvl4get();
+      }
+    });
+      
+  });
+};

@@ -1,3 +1,29 @@
+.list-block.gender::after {
+    color: lightgrey;
+    font-family: FontAwesome;
+    font-size: 6em;
+    margin-top: -150px;
+    position: absolute;
+    right: 25px;
+}
+.list-block.female::after {
+    content: "\f221";
+}
+.list-block.male::after {
+    content: "\f222";
+}
+.list-block.unknown::after {
+    content: "\f22d";
+}
+#speakerlist > .speaker-list > .list-block > .content-block-title{
+    color: black;
+    font-weight: 600;
+}
+.right .divider {
+    border-right: 1px solid steelblue;
+    height: 30px;
+    width: 1px;
+}
 div.swipeout-actions-right > a > i.fa-users {
     padding-left: 25px;
     padding-right: 25px;
