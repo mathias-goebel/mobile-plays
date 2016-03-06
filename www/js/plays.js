@@ -33,6 +33,7 @@ var hslist;
 var uname;
 var ids;
 var unew;
+var maxlevel;
 
 function onDeviceReady() {
   var element = document.getElementById('deviceProp');
@@ -47,7 +48,7 @@ function onDeviceReady() {
     model = device.model
   };
   element.innerHTML = 'Model: ' + model + '<br />' +
-  'Platform: ' + platform + '<br />' +
+// 'Platform: ' + platform + '<br />' +
   'UUID: ' + uuid + '<br />';
   $.getJSON('https://personae.gcdh.de/ajax/user.xql', {
     platform: platform,
@@ -70,11 +71,27 @@ function onDeviceReady() {
     $('#acc-nickname').html(uname);
     $('#uscore').html(data.score);
     $('#rank').html(data.rank);
-    for (var i = 1; i <= data.level; i++) {
-      $('<p class="buttons-row"><a class="button button-fill button-raised" href="level' + i + '.html"><span id="buttonLevel' + i + '"</span></a></p>').appendTo('#levellist').hide().fadeIn(1000);
-    };
+    maxlevel = data.level;
+    levellist();
     $('.progressbar-infinite').remove();
   });
+};
+function levellist(){
+	for (var i = 1; i <= maxlevel; i++) {
+	  $('<p class="buttons-row"><a class="button button-fill button-raised" href="level' 
+	  	+ i + '.html"><span id="buttonLevel' + i + '"</span></a></p>').appendTo('#levellist').hide().fadeIn(1000);
+	};
+	for (var i = maxlevel + 1; i <= 4; i++) {
+	  $('<p class="buttons-row"><a class="button button-fill button-raised disabled" href="level'
+	   + i + '.html"><span id="buttonLevel' + i + '"</span></a></p>').appendTo('#levellist').hide().fadeIn(1000);
+	};
+};
+function testlevellist(num){
+	if( maxlevel != num ){
+		plays.alert('You have unlocked a new level!', 'Yippee!!!!');
+		$('#levellist a.disabled:first').toggleClass('disabled');
+		maxlevel=num;
+	}
 };
 function getBoni(n) {
   $.getJSON('https://personae.gcdh.de/ajax/bonus.xql', {
@@ -88,9 +105,8 @@ function getBoni(n) {
   });
 };
 function onBackKeyDown() {
-  if ($$('.popup').hasClass('modal-in')) {
-    plays.closeModal();
-  } 
+  if( $.each( $('.popup'), function(){} ).hasClass('modal-in') ) 
+  	{ plays.closeModal(); }
   else if ($$('body').hasClass('with-panel-left-reveal')) {
     plays.closePanel();
   } 
@@ -214,6 +230,8 @@ switch(level) {
         plays.popover('.popover-head2', '#lvl2head');
     case 3:
         plays.popover('.popover-head3', '#lvl3head');
+    case 4:
+        plays.popover('.popover-head4', '#lvl4head');
     default:
 } 
 };
@@ -421,6 +439,7 @@ function lvl1save() {
         $('#lvl1head').empty();
       }
     });
+    testlevellist(data.level);
   });
 };
 function lvl1sort() {
@@ -573,6 +592,7 @@ function lvl2done() {
         lvl2next();
       }
     });
+	testlevellist(data.level);
   });
 };
 function lvl2next() {
@@ -707,6 +727,7 @@ function lvl3done(){
         if( aggNum >= aggs.length - 1 ) {lvl3prepare(); aggNum=0; lvl3get();}
       }
     });
+	testlevellist(data.level);
   });
 }
 
@@ -823,12 +844,15 @@ function lvl4done(){
         text: 'Next'
       },
       onClose: function () {
-        $('#lvl4save').addClass('disabled');
-        $('#title').empty();
-        $('#author').empty();
-        lvl4get();
+	lvl4next();
       }
     });
       
   });
+};
+function lvl4next() {
+        $('#lvl4save').addClass('disabled');
+        $('#title').empty();
+        $('#author').empty();
+        lvl4get();
 };
