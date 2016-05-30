@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.plays" version="1.0.922" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget
+	xmlns="http://www.w3.org/ns/widgets" 
+	xmlns:gap="http://phonegap.com/ns/1.0"
+	id="com.phonegap.plays" 
+	version="1.1.944">
     <name>Play(s)</name>
     <description>
         Mobile Application for Play(s) - enrich the encoding of hundreds of texts
@@ -23,7 +27,7 @@
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="disable-cursor" value="false" />
-    <preference name="android-minSdkVersion" value="14" />
+    <preference name="android-minSdkVersion" value="20" />
     <preference name="android-installLocation" value="auto" />
     <!--gap:plugin name="org.apache.cordova.battery-status" /-->
     <!--gap:plugin name="org.apache.cordova.camera" /-->
@@ -62,5 +66,5 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="android" spec="~4.1.1" />
+    <engine name="android" spec="~5.0" />
 </widget>

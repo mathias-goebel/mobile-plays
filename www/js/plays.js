@@ -331,7 +331,10 @@ function lvl1go() {
   $('input[type=checkbox]').on('click', function () {
     lvl1checksave();
   });
-  $$('.accordion-item').on('open', function () {
+  lvl1texts();
+};
+function lvl1texts(){
+	$$('.accordion-item').on('open', function () {
     var kkey = $$(this).attr('id');
     $.getJSON('https://personae.gcdh.de/ajax/level1texts.xql', {
       num: id,
@@ -679,6 +682,7 @@ function lvl3list(aggId) {
     'class': 'speaker-list',
     html: items.join('')
   }).appendTo('#speakerlist');
+  lvl1texts();
 };
 
 function lvl3checksave() {
