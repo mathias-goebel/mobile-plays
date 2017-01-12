@@ -432,13 +432,13 @@ function lvl1save() {
       default:
         var msg = '+' + data.thisscore + 'points! If an other player validates your input, the score doubles.';
     }
+    $('input:checkbox').removeAttr('checked');
     plays.addNotification({
       message: msg,
       button: {
         text: 'Yeah!'
       },
       onClose: function () {
-        $('input:checkbox').removeAttr('checked');
         $('#lvl1head').empty();
       }
     });
